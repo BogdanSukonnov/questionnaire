@@ -40,7 +40,7 @@ class ActiveQuestionnaireControllerV1Test {
 
         QuestionaryDto q1 = new QuestionaryDto(
                 1L,
-                0L,
+                3,
                 "title1",
                 LocalDateTime.of(2024, 5, 24, 13, 0, 0),
                 null,
@@ -50,7 +50,7 @@ class ActiveQuestionnaireControllerV1Test {
 
         QuestionaryDto q2 = new QuestionaryDto(
                 2L,
-                0L,
+                7,
                 "title2",
                 LocalDateTime.of(2024, 5, 24, 13, 0, 0),
                 null,

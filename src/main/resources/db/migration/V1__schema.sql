@@ -5,7 +5,7 @@ CREATE SEQUENCE IF NOT EXISTS questionary_seq START WITH 1 INCREMENT BY 50;
 CREATE TABLE question
 (
     id             BIGINT       NOT NULL,
-    version        BIGINT       NOT NULL,
+    version        INTEGER,
     text           VARCHAR(255) NOT NULL,
     type           VARCHAR(255) NOT NULL,
     answers        JSONB,
@@ -16,7 +16,7 @@ CREATE TABLE question
 CREATE TABLE questionary
 (
     id          BIGINT                      NOT NULL,
-    version     BIGINT                      NOT NULL,
+    version     INTEGER,
     title       VARCHAR(255)                NOT NULL,
     start_date  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     end_date    TIMESTAMP WITHOUT TIME ZONE,

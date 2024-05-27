@@ -4,7 +4,7 @@ import dev.bogdan.questionnaire.model.Question;
 
 public record QuestionDto(
         Long id,
-        Long version,
+        Integer version,
         String text,
         String type,
         String[] answers

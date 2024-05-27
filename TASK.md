@@ -24,7 +24,7 @@ TODO:
 - timezone
 - dto
 - exception handling
-- flyway
+- start date end date relation
 
 features:
 - constructor injection with Lombok

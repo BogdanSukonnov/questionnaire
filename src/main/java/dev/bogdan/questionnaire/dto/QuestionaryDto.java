@@ -9,7 +9,7 @@ import java.util.List;
 
 public record QuestionaryDto(
         Long id,
-        Long version,
+        Integer version,
         String title,
         LocalDateTime startDate,
         LocalDateTime endDate,

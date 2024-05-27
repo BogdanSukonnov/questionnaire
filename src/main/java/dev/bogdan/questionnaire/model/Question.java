@@ -4,18 +4,19 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 @Entity
 @Getter
+@Setter
 public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotNull
-    private Long version;
+    private Integer version;
 
     @NotNull
     private String text;
@@ -29,7 +30,7 @@ public class Question {
     String[] answers;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "questionary_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "questionary_id")
     private Questionary questionary;
 
 }
