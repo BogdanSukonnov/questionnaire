@@ -43,3 +43,4 @@ features:
 - pagination
 - validation
 - end time after start
+- authorization via api-key

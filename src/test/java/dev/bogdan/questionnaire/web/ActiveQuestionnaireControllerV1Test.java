@@ -2,6 +2,7 @@ package dev.bogdan.questionnaire.web;
 
 import dev.bogdan.questionnaire.controller.ActiveQuestionnaireControllerV1;
 import dev.bogdan.questionnaire.dto.QuestionnaireDto;
+import dev.bogdan.questionnaire.security.AuthenticationService;
 import dev.bogdan.questionnaire.security.WebSecurityConfiguration;
 import dev.bogdan.questionnaire.service.QuestionnaireService;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest({ActiveQuestionnaireControllerV1.class, WebSecurityConfiguration.class})
+@WebMvcTest({ActiveQuestionnaireControllerV1.class, WebSecurityConfiguration.class, AuthenticationService.class})
 class ActiveQuestionnaireControllerV1Test {
 
     @Autowired

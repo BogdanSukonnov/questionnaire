@@ -46,7 +46,7 @@ class QuestionnaireControllerV1Test {
     @Test
     void shouldFailAnonymously() throws Exception {
         this.mockMvc
-                .perform(get("/api/v1/questionnaires?page=0&size=2"))
+                .perform(get("/api/v1/questionnaires?page=0&size=10"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -73,12 +73,12 @@ class QuestionnaireControllerV1Test {
 
         Page<QuestionnaireDto> expectedResponse = new PageImpl<>(List.of(q1, q2));
 
-        when(questionnaireService.getAllQuestionnairesPaginated(0, 2)).thenReturn(expectedResponse);
+        when(questionnaireService.getAllQuestionnairesPaginated(0, 10)).thenReturn(expectedResponse);
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
         this.mockMvc
-                .perform(get("/api/v1/questionnaires?page=0&size=2")
+                .perform(get("/api/v1/questionnaires?page=0&size=10")
                         .header(API_KEY_HEADER, API_KEY_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
@@ -108,6 +108,5 @@ class QuestionnaireControllerV1Test {
                         .content(objectMapper.writeValueAsString(newQuestionnaireRequest)))
                 .andExpect(status().isOk());
     }
-
 
 }
