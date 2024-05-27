@@ -1,3 +1,8 @@
+
+api:
+  key-header-name: X-API-KEY
+  key: SECRET_API_KEY
+
 spring:
 
   application:

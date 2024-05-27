@@ -12,23 +12,20 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.Set;
 
 @RequiredArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
 
     private final Set<String> publicEndpoints;
+    private final AuthenticationService authenticationService;
 
-    public AuthenticationFilter() {
-        this.publicEndpoints = Collections.emptySet();
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         try {
-            Authentication authentication = AuthenticationService.getAuthentication((HttpServletRequest) request);
+            Authentication authentication = authenticationService.getAuthentication((HttpServletRequest) request);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception exp) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;

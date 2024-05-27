@@ -1,5 +1,6 @@
 package dev.bogdan.questionnaire.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfiguration {
 
     Set<String> publicEndpoints = Set.of(
@@ -21,13 +23,15 @@ public class WebSecurityConfiguration {
             "/api/v1/user-questionnaires"
     );
 
+    private final AuthenticationService authenticationService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry.anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new AuthenticationFilter(publicEndpoints), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AuthenticationFilter(publicEndpoints, authenticationService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.bogdan.questionnaire.controller.QuestionnaireControllerV1;
 import dev.bogdan.questionnaire.dto.NewQuestionnaireRequest;
 import dev.bogdan.questionnaire.dto.QuestionnaireDto;
+import dev.bogdan.questionnaire.security.AuthenticationService;
 import dev.bogdan.questionnaire.security.WebSecurityConfiguration;
 import dev.bogdan.questionnaire.service.QuestionnaireService;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -26,8 +27,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest({QuestionnaireControllerV1.class, WebSecurityConfiguration.class})
+@WebMvcTest({QuestionnaireControllerV1.class, WebSecurityConfiguration.class, AuthenticationService.class})
+@TestPropertySource(properties = {"api.key-header-name=api-key-header", "api.key=api-key-value"})
 class QuestionnaireControllerV1Test {
+
+    public static final String API_KEY_HEADER = "api-key-header";
+    public static final String API_KEY_VALUE = "api-key-value";
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,11 +47,10 @@ class QuestionnaireControllerV1Test {
     void shouldFailAnonymously() throws Exception {
         this.mockMvc
                 .perform(get("/api/v1/questionnaires?page=0&size=2"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturnQuestionariesAuthorized() throws Exception {
 
         QuestionnaireDto q1 = new QuestionnaireDto(
@@ -74,7 +78,8 @@ class QuestionnaireControllerV1Test {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
         this.mockMvc
-                .perform(get("/api/v1/questionnaires?page=0&size=2"))
+                .perform(get("/api/v1/questionnaires?page=0&size=2")
+                        .header(API_KEY_HEADER, API_KEY_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.content", hasSize(2)))
@@ -89,7 +94,6 @@ class QuestionnaireControllerV1Test {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldAddNewPost() throws Exception {
         NewQuestionnaireRequest newQuestionnaireRequest = new NewQuestionnaireRequest(
                 "title3",
@@ -99,6 +103,7 @@ class QuestionnaireControllerV1Test {
         );
         this.mockMvc
                 .perform(post("/api/v1/questionnaires")
+                        .header(API_KEY_HEADER, API_KEY_VALUE)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(newQuestionnaireRequest)))
                 .andExpect(status().isOk());
