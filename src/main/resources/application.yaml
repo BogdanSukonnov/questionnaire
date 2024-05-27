@@ -1,0 +1,21 @@
+spring:
+
+  application:
+    name: questionnaire
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:35432/questionnaires
+    username: questionnaire_user
+    password: questionnaire_password
+
+  flyway:
+    enabled: true
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+  jpa:
+    hibernate:
+      ddl-auto:
+        validate

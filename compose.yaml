@@ -1,0 +1,21 @@
+services:
+  questionnaire_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=questionnaire_user
+      - POSTGRES_PASSWORD=questionnaire_password
+      - POSTGRES_DB=questionnaires
+    ports:
+      - 35432:5432
+    volumes:
+      - questionnaires_data:/var/lib/postgresql/data
+    networks:
+      - localnetwork
+
+volumes:
+  questionnaires_data:
+
+networks:
+  localnetwork:
+    driver: bridge
