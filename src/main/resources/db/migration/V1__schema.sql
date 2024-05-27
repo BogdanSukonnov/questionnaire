@@ -1,6 +1,6 @@
 CREATE SEQUENCE IF NOT EXISTS question_seq START WITH 1 INCREMENT BY 50;
 
-CREATE SEQUENCE IF NOT EXISTS questionary_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE IF NOT EXISTS questionnaire_seq START WITH 1 INCREMENT BY 50;
 
 CREATE TABLE question
 (
@@ -9,11 +9,11 @@ CREATE TABLE question
     text           VARCHAR(255) NOT NULL,
     type           VARCHAR(255) NOT NULL,
     answers        JSONB,
-    questionary_id BIGINT       NOT NULL,
+    questionary_id BIGINT,
     CONSTRAINT pk_question PRIMARY KEY (id)
 );
 
-CREATE TABLE questionary
+CREATE TABLE questionnaire
 (
     id          BIGINT                      NOT NULL,
     version     INTEGER,
@@ -21,8 +21,8 @@ CREATE TABLE questionary
     start_date  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     end_date    TIMESTAMP WITHOUT TIME ZONE,
     description VARCHAR(255),
-    CONSTRAINT pk_questionary PRIMARY KEY (id)
+    CONSTRAINT pk_questionnaire PRIMARY KEY (id)
 );
 
 ALTER TABLE question
-    ADD CONSTRAINT FK_QUESTION_ON_QUESTIONARY FOREIGN KEY (questionary_id) REFERENCES questionary (id);
+    ADD CONSTRAINT FK_QUESTION_ON_QUESTIONARY FOREIGN KEY (questionary_id) REFERENCES questionnaire (id);

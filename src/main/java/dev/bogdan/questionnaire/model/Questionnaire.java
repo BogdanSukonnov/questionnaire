@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Questionary {
+public class Questionnaire {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -1,6 +1,8 @@
 package dev.bogdan.questionnaire.web;
 
-import dev.bogdan.questionnaire.controller.ActiveQuestionnaireControllerV1;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.bogdan.questionnaire.controller.QuestionnaireControllerV1;
+import dev.bogdan.questionnaire.dto.NewQuestionnaireRequest;
 import dev.bogdan.questionnaire.dto.QuestionnaireDto;
 import dev.bogdan.questionnaire.security.WebSecurityConfiguration;
 import dev.bogdan.questionnaire.service.QuestionnaireService;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -20,19 +23,31 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest({ActiveQuestionnaireControllerV1.class, WebSecurityConfiguration.class})
-class ActiveQuestionnaireControllerV1Test {
+@WebMvcTest({QuestionnaireControllerV1.class, WebSecurityConfiguration.class})
+class QuestionnaireControllerV1Test {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockBean
     private QuestionnaireService questionnaireService;
 
     @Test
-    void shouldReturnActiveQuestionariesAnonymously() throws Exception {
+    void shouldFailAnonymously() throws Exception {
+        this.mockMvc
+                .perform(get("/api/v1/questionnaires?page=0&size=2"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void shouldReturnQuestionariesAuthorized() throws Exception {
 
         QuestionnaireDto q1 = new QuestionnaireDto(
                 1L,
@@ -54,12 +69,12 @@ class ActiveQuestionnaireControllerV1Test {
 
         Page<QuestionnaireDto> expectedResponse = new PageImpl<>(List.of(q1, q2));
 
-        when(questionnaireService.getActiveQuestionnairesPaginated(0, 2)).thenReturn(expectedResponse);
+        when(questionnaireService.getAllQuestionnairesPaginated(0, 2)).thenReturn(expectedResponse);
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
         this.mockMvc
-                .perform(get("/api/v1/active-questionnaires?page=0&size=2"))
+                .perform(get("/api/v1/questionnaires?page=0&size=2"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.content", hasSize(2)))
@@ -72,5 +87,22 @@ class ActiveQuestionnaireControllerV1Test {
         ;
 
     }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void shouldAddNewPost() throws Exception {
+        NewQuestionnaireRequest newQuestionnaireRequest = new NewQuestionnaireRequest(
+                "title3",
+                LocalDateTime.of(2024, 5, 24, 13, 0, 0),
+                LocalDateTime.of(2024, 6, 24, 13, 0, 0),
+                "description"
+        );
+        this.mockMvc
+                .perform(post("/api/v1/questionnaires")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(newQuestionnaireRequest)))
+                .andExpect(status().isOk());
+    }
+
 
 }

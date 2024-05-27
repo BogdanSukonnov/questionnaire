@@ -20,11 +20,10 @@
 - документация по API
 
 TODO:
-- пагинация
+- documentation
 - timezone
-- dto
 - exception handling
-- start date end date relation
+- db index
 
 features:
 - constructor injection with Lombok
@@ -37,8 +36,10 @@ features:
 - id generation type sequence
 - api versioning
 - Dates as LocalDateTime, UTC db and server
-- dto - record
+- dto - record - mapper
 - flyway
 - MockMVCTest - testing web layer
 - compose
 - pagination
+- validation
+- end time after start
