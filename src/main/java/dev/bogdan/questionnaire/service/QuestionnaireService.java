@@ -57,4 +57,8 @@ public class QuestionnaireService {
         return questionnaireMapper.fromQuestionary(questionnaire);
     }
 
+    @Transactional
+    public void deleteQuestionnaire(Long id) {
+        questionnaireRepository.deleteById(id);
+    }
 }

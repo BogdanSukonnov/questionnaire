@@ -2,7 +2,6 @@ package dev.bogdan.questionnaire.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.bogdan.questionnaire.controller.QuestionnaireControllerV1;
-import dev.bogdan.questionnaire.dto.NewQuestionnaireRequest;
 import dev.bogdan.questionnaire.dto.QuestionnaireDto;
 import dev.bogdan.questionnaire.security.AuthenticationService;
 import dev.bogdan.questionnaire.security.WebSecurityConfiguration;
@@ -23,8 +22,8 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest({QuestionnaireControllerV1.class, WebSecurityConfiguration.class, AuthenticationService.class})
@@ -94,18 +93,11 @@ class QuestionnaireControllerV1Test {
     }
 
     @Test
-    void shouldAddNewPost() throws Exception {
-        NewQuestionnaireRequest newQuestionnaireRequest = new NewQuestionnaireRequest(
-                "title3",
-                LocalDateTime.of(2024, 5, 24, 13, 0, 0),
-                LocalDateTime.of(2024, 6, 24, 13, 0, 0),
-                "description"
-        );
+    void shouldDeleteQuestionary() throws Exception {
         this.mockMvc
-                .perform(post("/api/v1/questionnaires")
+                .perform(delete("/api/v1/questionnaires/777")
                         .header(API_KEY_HEADER, API_KEY_VALUE)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(newQuestionnaireRequest)))
+                        .contentType("application/json"))
                 .andExpect(status().isOk());
     }
 

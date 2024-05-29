@@ -30,4 +30,9 @@ public class QuestionnaireControllerV1 {
     public QuestionnaireDto updateQuestionnaire(@Valid @RequestBody UpdateQuestionnaireRequest updateQuestionnaireRequest) {
         return questionnaireService.updateQuestionnaire(updateQuestionnaireRequest);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteQuestionnaire(@PathVariable Long id) {
+        questionnaireService.deleteQuestionnaire(id);
+    }
 }

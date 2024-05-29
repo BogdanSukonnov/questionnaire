@@ -6,6 +6,7 @@ CREATE TABLE question
 (
     id             BIGINT       NOT NULL,
     version        INTEGER,
+    order_number   INTEGER,
     text           VARCHAR(255) NOT NULL,
     type           VARCHAR(255) NOT NULL,
     answers        JSONB,
@@ -23,6 +24,9 @@ CREATE TABLE questionnaire
     description VARCHAR(255),
     CONSTRAINT pk_questionnaire PRIMARY KEY (id)
 );
+
+ALTER TABLE question
+    ADD CONSTRAINT uc_question_order_questionary UNIQUE (questionary_id);
 
 ALTER TABLE question
     ADD CONSTRAINT FK_QUESTION_ON_QUESTIONARY FOREIGN KEY (questionary_id) REFERENCES questionnaire (id);

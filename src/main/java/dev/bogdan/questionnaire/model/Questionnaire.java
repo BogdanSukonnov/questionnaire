@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,6 +32,7 @@ public class Questionnaire {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "questionary_id")
-    private List<Question> questions;
+    @OrderBy("orderNumber")
+    private List<Question> questions = new ArrayList<>();
 
 }

@@ -25,6 +25,12 @@ TODO:
 - exception handling
 - db index
 
+ex:
+ - unauthorized
+ - changed start date
+ - end date after start date
+ - 
+
 features:
 - constructor injection with Lombok
 - Postgres jsonb for question options
@@ -44,3 +50,4 @@ features:
 - validation
 - end time after start
 - authorization via api-key
+- question order, unique constraint

@@ -10,6 +10,8 @@ import org.hibernate.annotations.Type;
 @Entity
 @Getter
 @Setter
+@Table(uniqueConstraints =
+@UniqueConstraint(name = "uc_question_order_questionary", columnNames = {"questionary_id", "order_number"}))
 public class Question {
 
     @Id
@@ -17,6 +19,8 @@ public class Question {
     private Long id;
 
     private Integer version;
+
+    private Integer orderNumber;
 
     @NotNull
     private String text;
