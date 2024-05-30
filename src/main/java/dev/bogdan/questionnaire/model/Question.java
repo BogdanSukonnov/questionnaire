@@ -7,11 +7,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
 @Table(uniqueConstraints =
-@UniqueConstraint(name = "uc_question_order_questionary", columnNames = {"questionary_id", "order_number"}))
+@UniqueConstraint(name = "uc_question_order_questionnaire", columnNames = {"questionnaire_id", "order_number"}))
 public class Question {
 
     @Id
@@ -34,7 +37,11 @@ public class Question {
     String[] answers;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "questionary_id")
+    @JoinColumn(name = "questionnaire_id")
     private Questionnaire questionnaire;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "question_id")
+    private List<Answer> userAnswers = new ArrayList<>();
 
 }

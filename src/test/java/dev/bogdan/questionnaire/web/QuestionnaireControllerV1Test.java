@@ -93,7 +93,7 @@ class QuestionnaireControllerV1Test {
     }
 
     @Test
-    void shouldDeleteQuestionary() throws Exception {
+    void shouldDeleteQuestionnaire() throws Exception {
         this.mockMvc
                 .perform(delete("/api/v1/questionnaires/777")
                         .header(API_KEY_HEADER, API_KEY_VALUE)

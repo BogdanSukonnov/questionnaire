@@ -3,6 +3,7 @@ package dev.bogdan.questionnaire.controller;
 import dev.bogdan.questionnaire.dto.NewQuestionRequest;
 import dev.bogdan.questionnaire.dto.QuestionDto;
 import dev.bogdan.questionnaire.dto.UpdateQuestionRequest;
+import dev.bogdan.questionnaire.dto.UpdateQuestionsOrderRequest;
 import dev.bogdan.questionnaire.service.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,12 @@ public class QuestionControllerV1 {
     @DeleteMapping("/{id}")
     public void deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
+    }
+
+    @PutMapping("/update-order")
+    public List<QuestionDto> updateOrderNumbers(
+            @Valid @RequestBody UpdateQuestionsOrderRequest updateQuestionsOrderRequest) {
+        return questionService.updateQuestionsOrder(updateQuestionsOrderRequest);
     }
 
 }

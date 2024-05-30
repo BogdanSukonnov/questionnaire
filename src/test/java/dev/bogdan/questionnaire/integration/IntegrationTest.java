@@ -34,8 +34,8 @@ public class IntegrationTest {
             .withPassword("sa");
 
     @Test
-    public void addQuestionaryTest() {
-        String title = "Test questionary";
+    public void addQuestionnaireTest() {
+        String title = "Test questionnaire";
         String description = "Test description";
         LocalDateTime startDate = LocalDateTime.of(2025, 5, 27, 17, 47);
         LocalDateTime endDate = LocalDateTime.of(2025, 6, 27, 17, 47);

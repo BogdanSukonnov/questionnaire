@@ -1,8 +1,6 @@
 package dev.bogdan.questionnaire.service;
 
-import dev.bogdan.questionnaire.dto.NewQuestionRequest;
-import dev.bogdan.questionnaire.dto.QuestionDto;
-import dev.bogdan.questionnaire.dto.UpdateQuestionRequest;
+import dev.bogdan.questionnaire.dto.*;
 import dev.bogdan.questionnaire.mapper.QuestionMapper;
 import dev.bogdan.questionnaire.model.Question;
 import dev.bogdan.questionnaire.model.Questionnaire;
@@ -13,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,12 +54,21 @@ public class QuestionService {
         questionRepository.deleteById(id);
     }
 
-//    @Transactional
-//    public List<QuestionDto> updateOrderNumbers(UpdateQuestionsOrderNumbersRequest updateQuestionsOrderNumbersRequest) {
-//        List<Question> questions = questionRepository.findAllById(updateQuestionsOrderNumbersRequest.questionIds());
-//        for (Question question : questions) {
-//            question.setOrderNumber(updateQuestionsOrderNumbersRequest.orderNumbers().get(question.getId()));
-//        }
-//        return questions.stream().map(questionMapper::toDto).toList();
-//    }
+    @Transactional
+    public List<QuestionDto> updateQuestionsOrder(UpdateQuestionsOrderRequest updateQuestionsOrderRequest) {
+        List<Question> questions = questionRepository.findAllById(updateQuestionsOrderRequest.questions()
+                .stream()
+                .map(UpdateQuestionsOrderRequestItem::questionId)
+                .collect(Collectors.toSet()));
+        Map<Long, Question> questionMap = questions.stream().collect(Collectors.toMap(Question::getId, question -> question));
+        for (UpdateQuestionsOrderRequestItem item : updateQuestionsOrderRequest.questions()) {
+            Question question = questionMap.get(item.questionId());
+            if (question == null) {
+                throw new IllegalArgumentException("Question not found");
+            }
+            question.setVersion(item.version());
+            question.setOrderNumber(item.orderNumber());
+        }
+        return questions.stream().map(questionMapper::toDto).toList();
+    }
 }

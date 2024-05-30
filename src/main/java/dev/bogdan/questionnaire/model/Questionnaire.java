@@ -31,7 +31,7 @@ public class Questionnaire {
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "questionary_id")
+    @JoinColumn(name = "questionnaire_id")
     @OrderBy("orderNumber")
     private List<Question> questions = new ArrayList<>();
 

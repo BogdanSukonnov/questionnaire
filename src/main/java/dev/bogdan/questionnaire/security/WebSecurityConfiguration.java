@@ -20,7 +20,9 @@ public class WebSecurityConfiguration {
 
     Set<String> publicEndpoints = Set.of(
             "/api/v1/active-questionnaires",
-            "/api/v1/user-questionnaires"
+            "/api/v1/user-questionnaires",
+            "/api/v1/submitted-questionnaires",
+            "/api/v1/answers"
     );
 
     private final AuthenticationService authenticationService;

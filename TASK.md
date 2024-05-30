@@ -24,6 +24,12 @@ TODO:
 - timezone
 - exception handling
 - db index
+- optimistic locking
+- all hashCode and equals
+- all sonarLint problems
+- get questions public other operations admin
+- check all answers answered before submit questionnaire
+- active questionnaire pagination
 
 ex:
  - unauthorized
@@ -32,13 +38,14 @@ ex:
  - 
 
 features:
+- active questionary by start date and are not submitted by user
 - constructor injection with Lombok
 - Postgres jsonb for question options
 - Enum as String with Hibernate
 - N+1 fetch joining
 - optimistic locking
 - validation
-- OneToMany-MenyToOne cascade and orphan removal
+- OneToMany-ManyToOne cascade and orphan removal
 - id generation type sequence
 - api versioning
 - Dates as LocalDateTime, UTC db and server
