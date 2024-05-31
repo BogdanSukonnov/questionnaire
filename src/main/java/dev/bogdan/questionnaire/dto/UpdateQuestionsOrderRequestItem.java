@@ -6,7 +6,7 @@ public record UpdateQuestionsOrderRequestItem(
 
         @NotNull Long questionId,
 
-        Integer version,
+        @NotNull Integer version,
 
         @NotNull Integer orderNumber
 

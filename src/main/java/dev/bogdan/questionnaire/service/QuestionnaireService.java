@@ -24,14 +24,14 @@ public class QuestionnaireService {
     public Page<QuestionnaireDto> getAllQuestionnairesPaginated(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Questionnaire> activeQuestionnaires = questionnaireRepository.findAll(pageable);
-        return activeQuestionnaires.map(questionnaireMapper::fromQuestionnaire);
+        return activeQuestionnaires.map(questionnaireMapper::toDto);
     }
 
     @Transactional
     public QuestionnaireDto addQuestionnaire(NewQuestionnaireRequest newQuestionnaireRequest) {
         newQuestionnaireRequest.checkEndDate();
-        Questionnaire savedQuestionnaire = questionnaireRepository.save(questionnaireMapper.toQuestionnaire(newQuestionnaireRequest));
-        return questionnaireMapper.fromQuestionnaire(savedQuestionnaire);
+        Questionnaire savedQuestionnaire = questionnaireRepository.save(questionnaireMapper.fromDto(newQuestionnaireRequest));
+        return questionnaireMapper.toDto(savedQuestionnaire);
     }
 
     @Transactional
@@ -47,7 +47,7 @@ public class QuestionnaireService {
         questionnaire.setStartDate(updateQuestionnaireRequest.startDate());
         questionnaire.setEndDate(updateQuestionnaireRequest.endDate());
         questionnaire.setDescription(updateQuestionnaireRequest.description());
-        return questionnaireMapper.fromQuestionnaire(questionnaire);
+        return questionnaireMapper.toDto(questionnaire);
     }
 
     @Transactional

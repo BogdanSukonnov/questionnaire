@@ -18,6 +18,7 @@ public class Questionnaire {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Version
     private Integer version;
 
     @NotNull

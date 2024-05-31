@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class QuestionnaireMapper {
 
-    public QuestionnaireDto fromQuestionnaire(Questionnaire questionnaire) {
+    public QuestionnaireDto toDto(Questionnaire questionnaire) {
         return new QuestionnaireDto(
                 questionnaire.getId(),
                 questionnaire.getVersion(),
@@ -19,7 +19,7 @@ public class QuestionnaireMapper {
         );
     }
 
-    public Questionnaire toQuestionnaire(NewQuestionnaireRequest newQuestionnaireRequest) {
+    public Questionnaire fromDto(NewQuestionnaireRequest newQuestionnaireRequest) {
         Questionnaire questionnaire = new Questionnaire();
         questionnaire.setTitle(newQuestionnaireRequest.title());
         questionnaire.setStartDate(newQuestionnaireRequest.startDate());

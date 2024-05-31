@@ -1,11 +1,10 @@
 package dev.bogdan.questionnaire.dto;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotNull;
 
 public record NewSubmittedQuestionnaireRequest(
-        Long userId,
-        Long questionnaireId,
-        Integer questionnaireVersion,
-        LocalDateTime submittedAt
+        @NotNull Long userId,
+        @NotNull Long questionnaireId,
+        @NotNull Integer questionnaireVersion
 ) {
 }

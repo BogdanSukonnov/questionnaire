@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public record UpdateQuestionnaireRequest(
         @NotNull Long id,
-        Integer version,
+        @NotNull Integer version,
         @NotNull String title,
         @NotNull LocalDateTime startDate,
         LocalDateTime endDate,

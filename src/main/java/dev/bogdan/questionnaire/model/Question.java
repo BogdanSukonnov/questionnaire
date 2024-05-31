@@ -21,6 +21,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Version
     private Integer version;
 
     private Integer orderNumber;

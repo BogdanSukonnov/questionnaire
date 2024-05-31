@@ -1,10 +1,12 @@
 package dev.bogdan.questionnaire.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 public record UserQuestionnaireDto(
-        QuestionnaireDto questionnaire,
-        List<QuestionDto> questions,
-        List<AnswerDto> answers
+        @NotNull QuestionnaireDto questionnaire,
+        @NotNull List<QuestionDto> questions,
+        @NotNull List<AnswerDto> answers
 ) {
 }

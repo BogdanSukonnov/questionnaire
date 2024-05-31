@@ -49,7 +49,7 @@ public class ActiveQuestionnaireService {
                 .setParameter("currentDate", LocalDateTime.now())
                 .getResultList();
 
-        return resultList.stream().map(questionnaireMapper::fromQuestionnaire).toList();
+        return resultList.stream().map(questionnaireMapper::toDto).toList();
 
     }
 
@@ -83,7 +83,7 @@ public class ActiveQuestionnaireService {
                 .setParameter("userId", userId)
                 .getResultList();
 
-        return new UserQuestionnaireDto(questionnaireMapper.fromQuestionnaire(questionnaire),
+        return new UserQuestionnaireDto(questionnaireMapper.toDto(questionnaire),
                 questions.stream().map(questionMapper::toDto).toList(),
                 answers.stream().map(answerMapper::toDto).toList());
 
@@ -132,7 +132,7 @@ public class ActiveQuestionnaireService {
                     .map(question -> questionIdToAnswersMap.get(question.getId()))
                     .flatMap(List::stream)
                     .toList();
-            return new UserQuestionnaireDto(questionnaireMapper.fromQuestionnaire(questionnaire),
+            return new UserQuestionnaireDto(questionnaireMapper.toDto(questionnaire),
                     questionnaireQuestions.stream().map(questionMapper::toDto).toList(),
                     questionnaireAnswers.stream().map(answerMapper::toDto).toList());
         }).toList();

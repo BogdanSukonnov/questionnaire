@@ -20,6 +20,7 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Version
     private Integer version;
 
     @NotNull

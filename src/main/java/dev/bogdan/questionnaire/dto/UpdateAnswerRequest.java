@@ -1,15 +1,14 @@
 package dev.bogdan.questionnaire.dto;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotNull;
 
 public record UpdateAnswerRequest(
-        Long questionId,
-        Integer questionVersion,
-        Long id,
-        Integer version,
+        @NotNull Long questionId,
+        @NotNull Integer questionVersion,
+        @NotNull Long id,
+        @NotNull Integer version,
         String text,
         Integer checkedAnswer,
-        Integer[] checkedAnswers,
-        LocalDateTime submittedAt
+        Integer[] checkedAnswers
 ) {
 }

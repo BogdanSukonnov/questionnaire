@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record UpdateQuestionRequest(
         @NotNull Long id,
-        Integer version,
+        @NotNull Integer version,
         @NotNull Long questionnaireId,
         @NotNull Integer orderNumber,
         @NotNull String text,

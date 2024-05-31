@@ -4,13 +4,11 @@ import dev.bogdan.questionnaire.controller.ActiveQuestionnaireControllerV1;
 import dev.bogdan.questionnaire.dto.QuestionnaireDto;
 import dev.bogdan.questionnaire.security.AuthenticationService;
 import dev.bogdan.questionnaire.security.WebSecurityConfiguration;
-import dev.bogdan.questionnaire.service.QuestionnaireService;
+import dev.bogdan.questionnaire.service.ActiveQuestionnaireService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -30,7 +28,7 @@ class ActiveQuestionnaireControllerV1Test {
     private MockMvc mockMvc;
 
     @MockBean
-    private QuestionnaireService questionnaireService;
+    private ActiveQuestionnaireService activeQuestionnaireService;
 
     @Test
     void shouldReturnActiveQuestionariesAnonymously() throws Exception {
@@ -53,23 +51,23 @@ class ActiveQuestionnaireControllerV1Test {
                 null
         );
 
-        Page<QuestionnaireDto> expectedResponse = new PageImpl<>(List.of(q1, q2));
+        List<QuestionnaireDto> expectedResponse = List.of(q1, q2);
 
-        when(questionnaireService.getActiveQuestionnairesPaginated(0, 2)).thenReturn(expectedResponse);
+        when(activeQuestionnaireService.getActiveQuestionnaires(777L)).thenReturn(expectedResponse);
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
         this.mockMvc
-                .perform(get("/api/v1/active-questionnaires?page=0&size=2"))
+                .perform(get("/api/v1/active-questionnaires?user_id=777"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.content", hasSize(2)))
-                .andExpect(jsonPath("$.content[0].id", is(q1.id().intValue())))
-                .andExpect(jsonPath("$.content[0].title", is(q1.title())))
-                .andExpect(jsonPath("$.content[0].startDate", is(dateFormatter.format(q1.startDate()))))
-                .andExpect(jsonPath("$.content[0].endDate", is(dateFormatter.format(q1.endDate()))))
-                .andExpect(jsonPath("$.content[1].id", is(q2.id().intValue())))
-                .andExpect(jsonPath("$.content[1].title", is(q2.title())))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(q1.id().intValue())))
+                .andExpect(jsonPath("$[0].title", is(q1.title())))
+                .andExpect(jsonPath("$[0].startDate", is(dateFormatter.format(q1.startDate()))))
+                .andExpect(jsonPath("$[0].endDate", is(dateFormatter.format(q1.endDate()))))
+                .andExpect(jsonPath("$[1].id", is(q2.id().intValue())))
+                .andExpect(jsonPath("$[1].title", is(q2.title())))
         ;
 
     }
